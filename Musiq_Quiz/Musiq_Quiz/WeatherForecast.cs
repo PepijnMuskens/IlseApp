@@ -1,8 +1,8 @@
-namespace Ilse_song
+namespace Musiq_Quiz
 {
     public class WeatherForecast
     {
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
         public int TemperatureC { get; set; }
 
