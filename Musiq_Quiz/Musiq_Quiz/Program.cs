@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MusicQuiz.Data;
+using MySqlConnector; 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MusicQuizDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MusicQuizContext") ?? throw new InvalidOperationException("Connection string 'MusicQuizContext' not found.")));
+    options.UseMySQL(builder.Configuration.GetConnectionString("MusicQuizContext") ?? throw new InvalidOperationException("Connection string 'MusicQuizContext' not found.")));
 
 // Add services to the container.
 

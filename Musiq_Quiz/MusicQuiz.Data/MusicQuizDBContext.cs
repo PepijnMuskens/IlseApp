@@ -11,6 +11,11 @@ namespace MusicQuiz.Data;
 
 public class MusicQuizDBContext : DbContext
 {
+    public MusicQuizDBContext(DbContextOptions<MusicQuizDBContext> options)
+            : base(options)
+    {
+    }
+
     public DbSet<AudioFile> AudioFiles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
