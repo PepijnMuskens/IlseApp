@@ -20,89 +20,83 @@ namespace MusicQuiz.Controllers
             _context = context;
         }
 
-        // GET: api/AudioFile
         [HttpGet("audiofiles")]
         public async Task<ActionResult<IEnumerable<AudioFile>>> GetAudioFiles()
         {
-            var audioFiles = await _context.AudioFiles.ToListAsync();
-            return Ok(audioFiles);
+            return await _context.AudioFiles.ToListAsync();
         }
 
-        //// GET: api/AudioFile/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<AudioFile>> GetAudioFile(int id)
-        //{
-        //    var audioFile = await _context.AudioFiles.FindAsync(id);
+        [HttpGet("audiofiles/{id}")]
+        public async Task<ActionResult<AudioFile>> GetAudioFile(int id)
+        {
+            var audioFile = await _context.AudioFiles.FindAsync(id);
 
-        //    if (audioFile == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (audioFile == null)
+            {
+                return NotFound();
+            }
 
-        //    return audioFile;
-        //}
+            return audioFile;
+        }
 
-        //// PUT: api/AudioFile/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutAudioFile(int id, AudioFile audioFile)
-        //{
-        //    if (id != audioFile.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("audiofiles/{id}")]
+        public async Task<IActionResult> PutAudioFile(int id, AudioFile audioFile)
+        {
+            if (id != audioFile.Id)
+            {
+                return BadRequest();
+            }
 
-        //    _context.Entry(audioFile).State = EntityState.Modified;
+            _context.Entry(audioFile).State = EntityState.Modified;
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!AudioFileExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AudioFileExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
-        //// POST: api/AudioFile
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<AudioFile>> PostAudioFile(AudioFile audioFile)
-        //{
-        //    _context.AudioFiles.Add(audioFile);
-        //    await _context.SaveChangesAsync();
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("audiofiles")]
+        public async Task<ActionResult<AudioFile>> PostAudioFile(AudioFile audioFile)
+        {
+            _context.AudioFiles.Add(audioFile);
+            await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetAudioFile", new { id = audioFile.Id }, audioFile);
-        //}
+            return CreatedAtAction("GetAudioFile", new { id = audioFile.Id }, audioFile);
+        }
 
-        //// DELETE: api/AudioFile/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteAudioFile(int id)
-        //{
-        //    var audioFile = await _context.AudioFiles.FindAsync(id);
-        //    if (audioFile == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("audiofiles/{id}")]
+        public async Task<IActionResult> DeleteAudioFile(int id)
+        {
+            var audioFile = await _context.AudioFiles.FindAsync(id);
+            if (audioFile == null)
+            {
+                return NotFound();
+            }
 
-        //    _context.AudioFiles.Remove(audioFile);
-        //    await _context.SaveChangesAsync();
+            _context.AudioFiles.Remove(audioFile);
+            await _context.SaveChangesAsync();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
-        //private bool AudioFileExists(int id)
-        //{
-        //    return _context.AudioFiles.Any(e => e.Id == id);
-        //}
+        private bool AudioFileExists(int id)
+        {
+            return _context.AudioFiles.Any(e => e.Id == id);
+        }
     }
 }
