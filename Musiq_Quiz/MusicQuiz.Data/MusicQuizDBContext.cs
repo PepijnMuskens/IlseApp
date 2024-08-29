@@ -17,7 +17,7 @@ public class MusicQuizDBContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseMySQL("Server=1j6.h.filess.io;Database=Music_Quiz;User Id=MusicQuiz_fliesfast;Password=31762c70cd035dd1f9dcce97a658a33d91741055;");
+            optionsBuilder.UseMySQL("server=1j6.h.filess.io;user=MusicQuiz_fliesfast;database=MusicQuiz_fliesfast;port=3307;password=31762c70cd035dd1f9dcce97a658a33d91741055");
         }
     }
 }

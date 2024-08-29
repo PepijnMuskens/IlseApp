@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MusicQuiz.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MusicQuizContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MusicQuizContext") ?? throw new InvalidOperationException("Connection string 'MusicQuizContext' not found.")));
 
 // Add services to the container.
 
