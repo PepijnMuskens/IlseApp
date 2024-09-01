@@ -10,7 +10,7 @@ namespace MusicQuiz.Data.Models
     public class AudioFile
     {
         public int Id { get; set; }
-        [Column(TypeName = "LONGBLOB")]
+        public string Name { get; set; }
         public byte[] AudioData { get; set; }
     }
 }

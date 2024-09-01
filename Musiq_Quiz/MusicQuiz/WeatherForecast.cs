@@ -1,4 +1,4 @@
-namespace Musiq_Quiz
+namespace MusicQuiz
 {
     public class WeatherForecast
     {

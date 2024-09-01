@@ -9,17 +9,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Musiq_Quiz/Musiq_Quiz.csproj", "Musiq_Quiz/"]
-RUN dotnet restore "./Musiq_Quiz/Musiq_Quiz.csproj"
+COPY ["MusicQuiz/MusicQuiz.csproj", "MusicQuiz/"]
+RUN dotnet restore "./MusicQuiz/MusicQuiz.csproj"
 COPY . .
-WORKDIR "/src/Musiq_Quiz"
-RUN dotnet build "./Musiq_Quiz.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/MusicQuiz"
+RUN dotnet build "./MusicQuiz.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Musiq_Quiz.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./MusicQuiz.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Musiq_Quiz.dll"]
+ENTRYPOINT ["dotnet", "MusicQuiz.dll"]

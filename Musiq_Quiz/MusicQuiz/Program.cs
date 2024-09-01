@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 using MusicQuiz.Data;
-using MySqlConnector; 
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MusicQuizDBContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("MusicQuizContext") ?? throw new InvalidOperationException("Connection string 'MusicQuizContext' not found.")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("MusicQuizContext") ?? throw new InvalidOperationException("Connection string 'MusicQuizContext' not found.")));
 
 // Add services to the container.
 

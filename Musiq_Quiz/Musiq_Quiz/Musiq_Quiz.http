@@ -1,6 +1,0 @@
-@Musiq_Quiz_HostAddress = http://localhost:5004
-
-GET {{Musiq_Quiz_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

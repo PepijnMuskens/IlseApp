@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Musiq_Quiz.Controllers
+namespace MusicQuiz.Controllers
 {
     [ApiController]
     [Route("[controller]")]

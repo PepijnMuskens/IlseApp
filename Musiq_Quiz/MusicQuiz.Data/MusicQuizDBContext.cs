@@ -22,7 +22,7 @@ public class MusicQuizDBContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseMySQL("server=1j6.h.filess.io;user=MusicQuiz_fliesfast;database=MusicQuiz_fliesfast;port=3307;password=31762c70cd035dd1f9dcce97a658a33d91741055");
+            optionsBuilder.UseNpgsql("Host=music-quiz-11117.7tc.aws-eu-central-1.cockroachlabs.cloud;Port=26257;Username=juicybram;Password=kHS2didnYbXrEUj97vMuYQ;Database=defaultdb;SslMode=Require");
         }
     }
 }
