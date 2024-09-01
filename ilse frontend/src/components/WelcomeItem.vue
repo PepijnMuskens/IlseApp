@@ -1,4 +1,20 @@
+<script>
+  export default{
+    methods:{
+      
+      playSound (sound) {
+        if(sound) {
+          var audio = new Audio(sound);
+          audio.play();
+        }
+      }
+    }
+  }
+
+</script>
+
 <template>
+  <button class="btn btn-primary btn-sm" @click="playSound('https://commondatastorage.googleapis.com/codeskulptor-assets/week7-bounce.m4a')"><span class="fa fa-play-circle-o"></span>play sound</button>
   <div class="item">
     <i>
       <slot name="icon"></slot>
