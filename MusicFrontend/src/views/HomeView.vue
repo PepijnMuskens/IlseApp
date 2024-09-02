@@ -2,25 +2,24 @@
 export default{
   methods:{
       async playSound (url) {
-        const axios = require('axios');
+        
         const res = await fetch(url)
         const data = await res.json()
-        var sound;
+      
         if (data.audioData != 0) {
-          sound = audioData
+          var sound = data.audioData
+          console.log(sound)
+          var audio = new Audio('data:audio/mpeg;base64,'+sound);
+          audio.play();
+          
         }else{
           console.log(data)
-        }
-        if(sound) {
-          
-          var audio = new Audio('data:audio/mp3;base64,'+sound);
-          audio.play();
         }
       }
     },
     data() { 
         return { 
-          url: "https://localhost:7002/audiofiles"
+          url: "https://localhost:7219/audiofiles/2"
         }
       }
   }
