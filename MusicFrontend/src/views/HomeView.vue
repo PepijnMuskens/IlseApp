@@ -29,8 +29,15 @@ export default{
 
 <template>
   <main>
-    <input type="text" v-model="this.url" />
+    <input class="btn" type="text" v-model="this.url" />
     <p>url: {{ this.url }}</p>
     <button class="btn btn-primary btn-sm" @click="playSound(this.url)"><span class="fa fa-play-circle-o"></span>play sound</button>
   </main>
 </template>
+
+<style scoped>
+  .btn{
+    display: flex;
+    width: 100%;
+  }
+</style>
