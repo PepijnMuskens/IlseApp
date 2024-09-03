@@ -1,17 +1,19 @@
 <script>
 export default{
   methods:{
-      async StartQuiz () {
-        
-        const res = await fetch('https://musicquiz-t1qr.onrender.com/startquiz')
-        const data = await res.json()
-        if (data.id != 0) {
-          this.$router.push({ name: 'QuizRound', params: { id: data.Id } })
-          
-        }else{
-          console.log(data)
+      
+    },
+    data(){
+        return{
+            round:{
+                name:'',
+                number: 0,
+                score: 0,
+                songs:[
+                    ''
+                ]
+            }
         }
-      }
     }
   }
 

@@ -16,6 +16,11 @@ const router = createRouter({
       component: StartQuiz
     },
     {
+      path: '/quizround:id',
+      name: 'QuizRound',
+      component: StartQuiz
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
