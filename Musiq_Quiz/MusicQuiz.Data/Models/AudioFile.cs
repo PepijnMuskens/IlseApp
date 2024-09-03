@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicQuiz.Data.Models
+namespace MusicQuiz.Data.Models;
+
+public class AudioFile
 {
-    public class AudioFile
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public byte[] AudioData { get; set; }
-    }
+    public int Id { get; set; }
+    public SongName Name { get; set; }
+    public byte[] FullSongBase64 { get; set; }
+    public byte[] GuitarSoloBase64 { get; set; }
+    public float FullSongDuration {  get; set; }
+    public float GituarSoloDuration { get; set; }
 }

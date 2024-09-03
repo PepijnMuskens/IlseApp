@@ -9,101 +9,144 @@ using MusicQuiz.Data;
 using MusicQuiz.Data.Models;
 using MusicQuiz.DTOs;
 
-namespace MusicQuiz.Controllers
+namespace MusicQuiz.Controllers;
+
+[ApiController]
+[Route("api/audiofiles")]
+public class AudioFileController : ControllerBase
 {
-    [ApiController]
-    public class AudioFileController : ControllerBase
+    private readonly MusicQuizDBContext _context;
+
+    public AudioFileController(MusicQuizDBContext context)
     {
-        private readonly MusicQuizDBContext _context;
+        _context = context;
+    }
 
-        public AudioFileController(MusicQuizDBContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<AudioFileDTO>>> GetAudioFiles()
+    {
+        var audioFiles = await _context.AudioFiles
+                                       .Include(af => af.Name)
+                                       .ToListAsync();
+
+        var audioFileDtos = audioFiles.Select(af => new AudioFileDTO
         {
-            _context = context;
+            Id = af.Id,
+            Name = af.Name?.Name, 
+            FullSongBase64 = af.FullSongBase64,
+            GuitarSoloBase64 = af.GuitarSoloBase64,
+            FullSongDuration = af.FullSongDuration,
+            GuitarSoloDuration = af.GituarSoloDuration
+        }).ToList();
+
+        return Ok(audioFileDtos);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<AudioFile>> GetAudioFile(int id)
+    {
+        var audioFile = await _context.AudioFiles.FindAsync(id);
+
+        if (audioFile == null)
+        {
+            return NotFound();
         }
 
-        [HttpGet("audiofiles")]
-        public async Task<ActionResult<IEnumerable<AudioFile>>> GetAudioFiles()
+        return audioFile;
+    }
+
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutAudioFile(int id, AudioFile audioFile)
+    {
+        if (id != audioFile.Id)
         {
-            return await _context.AudioFiles.ToListAsync();
+            return BadRequest();
         }
 
-        [HttpGet("audiofiles/{id}")]
-        public async Task<ActionResult<AudioFile>> GetAudioFile(int id)
-        {
-            var audioFile = await _context.AudioFiles.FindAsync(id);
+        _context.Entry(audioFile).State = EntityState.Modified;
 
-            if (audioFile == null)
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!AudioFileExists(id))
             {
                 return NotFound();
             }
-
-            return audioFile;
+            else
+            {
+                throw;
+            }
         }
 
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("audiofiles/{id}")]
-        public async Task<IActionResult> PutAudioFile(int id, AudioFile audioFile)
+        return NoContent();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<AudioFile>> PostAudioFile(AudioFileDTO audioFileDTO)
+    {
+        // Controleer of de songName al bestaat in de database
+        var existingSongName = await _context.SongNames
+            .FirstOrDefaultAsync(sn => sn.Name == audioFileDTO.Name);
+
+        SongName songName;
+
+        // Als de songName niet bestaat, voeg een nieuwe toe
+        if (existingSongName == null)
         {
-            if (id != audioFile.Id)
+            songName = new SongName
             {
-                return BadRequest();
-            }
-
-            _context.Entry(audioFile).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AudioFileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("audiofiles")]
-        public async Task<ActionResult<AudioFile>> PostAudioFile(AudioFileDTO audioFileDTO)
-        {
-            var audioFile = new AudioFile
-            {
-                Name = audioFileDTO.Name,
-                AudioData = audioFileDTO.AudioData
+                Name = audioFileDTO.Name
             };
 
-            _context.AudioFiles.Add(audioFile);
+            // Voeg de nieuwe songName toe aan de context
+            _context.SongNames.Add(songName);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAudioFile", new { id = audioFile.Id }, audioFile);
         }
-
-        [HttpDelete("audiofiles/{id}")]
-        public async Task<IActionResult> DeleteAudioFile(int id)
+        else
         {
-            var audioFile = await _context.AudioFiles.FindAsync(id);
-            if (audioFile == null)
-            {
-                return NotFound();
-            }
-
-            _context.AudioFiles.Remove(audioFile);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            // Gebruik de bestaande songName
+            songName = existingSongName;
         }
 
-        private bool AudioFileExists(int id)
+        // Creëer een AudioFile object met de data uit de DTO en koppel de songName
+        var audioFile = new AudioFile
         {
-            return _context.AudioFiles.Any(e => e.Id == id);
+            Name = songName,
+            FullSongBase64 = audioFileDTO.FullSongBase64,
+            GuitarSoloBase64 = audioFileDTO.GuitarSoloBase64,
+            FullSongDuration = audioFileDTO.FullSongDuration,
+            GituarSoloDuration = audioFileDTO.GuitarSoloDuration
+        };
+
+        // Voeg het nieuwe AudioFile object toe aan de context en sla op in de database
+        _context.AudioFiles.Add(audioFile);
+        await _context.SaveChangesAsync();
+
+        // Retourneer het gecreëerde AudioFile object
+        return CreatedAtAction(nameof(GetAudioFile), new { id = audioFile.Id }, audioFile);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAudioFile(int id)
+    {
+        var audioFile = await _context.AudioFiles.FindAsync(id);
+        if (audioFile == null)
+        {
+            return NotFound();
         }
+
+        _context.AudioFiles.Remove(audioFile);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool AudioFileExists(int id)
+    {
+        return _context.AudioFiles.Any(e => e.Id == id);
     }
 }
