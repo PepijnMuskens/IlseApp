@@ -91,25 +91,23 @@ public class AudioFileController : ControllerBase
         // Controleer of de songName al bestaat in de database
         var existingSongName = await _context.SongNames
             .FirstOrDefaultAsync(sn => sn.Name == audioFileDTO.Name);
-
+        
         SongName songName;
 
         // Als de songName niet bestaat, voeg een nieuwe toe
-        if (existingSongName == null)
+        if (existingSongName != null)
         {
+            songName = existingSongName;
+           
+        }
+        else
+        {
+            // Gebruik de bestaande songName
             songName = new SongName
             {
                 Name = audioFileDTO.Name
             };
 
-            // Voeg de nieuwe songName toe aan de context
-            _context.SongNames.Add(songName);
-            await _context.SaveChangesAsync();
-        }
-        else
-        {
-            // Gebruik de bestaande songName
-            songName = existingSongName;
         }
 
         // Creëer een AudioFile object met de data uit de DTO en koppel de songName
@@ -124,6 +122,10 @@ public class AudioFileController : ControllerBase
 
         // Voeg het nieuwe AudioFile object toe aan de context en sla op in de database
         _context.AudioFiles.Add(audioFile);
+        await _context.SaveChangesAsync();
+
+        // Voeg de nieuwe songName toe aan de context
+        _context.SongNames.Add(songName);
         await _context.SaveChangesAsync();
 
         // Retourneer het gecreëerde AudioFile object
