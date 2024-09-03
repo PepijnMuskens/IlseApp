@@ -19,7 +19,7 @@ export default{
     },
     data() { 
         return { 
-          url: "https://localhost:7219/audiofiles/2"
+          url: "https://music-quiz-latest.onrender.com/audiofiles/2"
         }
       }
   }
