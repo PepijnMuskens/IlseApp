@@ -6,8 +6,8 @@ export default{
         const res = await fetch(url)
         const data = await res.json()
       
-        if (data.audioData != 0) {
-          var sound = data.audioData
+        if (data.fullSongBase64 != 0) {
+          var sound = data.fullSongBase64
           console.log(sound)
           var audio = new Audio('data:audio/mpeg;base64,'+sound);
           audio.play();
@@ -19,7 +19,7 @@ export default{
     },
     data() { 
         return { 
-          url: "https://music-quiz-latest.onrender.com/audiofiles/2"
+          url: "https://musiq-quiz.onrender.com/api/audiofiles/3"
         }
       }
   }

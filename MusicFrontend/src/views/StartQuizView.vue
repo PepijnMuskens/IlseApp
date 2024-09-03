@@ -3,11 +3,10 @@ export default{
   methods:{
       async StartQuiz () {
         
-        const res = await fetch('https://musicquiz-t1qr.onrender.com/startquiz')
+        const res = await fetch('https://musiq-quiz.onrender.com/startquiz')
         const data = await res.json()
         if (data.id != 0) {
-          this.$router.push({ name: 'QuizRound', params: { id: data.Id } })
-          
+          this.$router.push({ name: 'QuizRound', params:{id: data.id}})
         }else{
           console.log(data)
         }
