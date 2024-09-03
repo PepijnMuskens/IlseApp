@@ -18,6 +18,18 @@ public class MusicQuizDBContext : DbContext
 
     public DbSet<AudioFile> AudioFiles { get; set; }
 
+    public DbSet<SongName> SongNames { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AudioFile>()
+            .HasOne(a => a.Name)
+            .WithOne(s => s.AudioFile)
+            .HasForeignKey<SongName>(s => s.AudioFileId); // Stel de Foreign Key in op SongName
+
+        base.OnModelCreating(modelBuilder);
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
