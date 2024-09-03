@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 8.0.x
     
     - name: Restore dependencies
-      run: dotnet restore Musiq_Quiz.sln  # Specify the solution file here
+      run: dotnet restore Musiq_Quiz/Musiq_Quiz.sln  # Specify the solution file here
     
     - name: Build
-      run: dotnet build Musiq_Quiz.sln --no-restore  # Specify the solution file here
+      run: dotnet build Musiq_Quiz/Musiq_Quiz.sln --no-restore  # Specify the solution file here
     
     - name: Test
-      run: dotnet test Musiq_Quiz.sln --no-build --verbosity normal  # Specify the solution file here
+      run: dotnet test Musiq_Quiz/Musiq_Quiz.sln --no-build --verbosity normal  # Specify the solution file here
