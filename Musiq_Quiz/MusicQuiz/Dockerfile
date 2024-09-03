@@ -9,7 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MusicQuiz.csproj", "MusicQuiz/"]
+COPY ["MusicQuiz/MusicQuiz.csproj", "MusicQuiz/"]
 RUN dotnet restore "./MusicQuiz/MusicQuiz.csproj"
 COPY . .
 WORKDIR "/src/MusicQuiz"
