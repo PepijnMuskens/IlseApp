@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicQuiz.Data;
 using MusicQuiz.Data.Models;
+using MusicQuiz.DTOs;
 
 namespace MusicQuiz.Controllers
 {
@@ -71,8 +72,14 @@ namespace MusicQuiz.Controllers
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("audiofiles")]
-        public async Task<ActionResult<AudioFile>> PostAudioFile(AudioFile audioFile)
+        public async Task<ActionResult<AudioFile>> PostAudioFile(AudioFileDTO audioFileDTO)
         {
+            var audioFile = new AudioFile
+            {
+                Name = audioFileDTO.Name,
+                AudioData = audioFileDTO.AudioData
+            };
+
             _context.AudioFiles.Add(audioFile);
             await _context.SaveChangesAsync();
 
