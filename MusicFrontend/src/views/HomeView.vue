@@ -15,6 +15,9 @@ export default{
         }else{
           console.log(data)
         }
+      },
+      goto(){
+        this.$router.push({ name: 'StartQuiz'})
       }
     },
     data() { 
@@ -31,6 +34,7 @@ export default{
     <input class="btn" type="text" v-model="this.url" />
     <p>url: {{ this.url }}</p>
     <button class="btn btn-primary btn-sm" @click="playSound(this.url)"><span class="fa fa-play-circle-o"></span>play sound</button>
+    <button class="btn btn-primary btn-sm" @click="goto()"><span class="fa fa-play-circle-o"></span>Go to quiz</button>
   </main>
 </template>
 
