@@ -17,6 +17,9 @@ export default{
         });
       }
       
+      },
+      async tempfunction(){
+
       }
     },
     data(){
@@ -37,6 +40,16 @@ export default{
                 ]
             }
         }
+    },
+    async beforeMount(){
+      const requestOptions = {
+          method: 'GET',
+          params: { 'id': this.$route.params.id }
+        }
+      const res = await fetch('https://musiq-quiz.onrender.com/roundinfo',requestOptions)
+      console.log(res)
+        const data = await res.json()
+       
     }
   }
 
@@ -44,11 +57,13 @@ export default{
 
 <template>
   <main class="main-div">
-    <input v-model="this.guess">
-      <button class="btn"  @click="getAnswers(this.guess)">Guess</button>
-      <div v-for="guess in this.PossibleGuesses" :key="guess.name">
-        <p>{{ guess.name + '\n~\n' + guess.artist}}</p>
-      </div>
+    <div class="answers-div">
+      <input v-model="this.guess">
+        <div v-for="guess in this.PossibleGuesses" :key="guess.name" style="padding-top: 10pt;">
+          <p>{{ guess.name + '\n~\n' + guess.artist}}</p>
+        </div>
+    </div>
+    <button class="btn"  @click="getAnswers(this.guess)">Guess</button>
   </main>
 </template>
 
@@ -64,9 +79,17 @@ export default{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
-    padding-left: 10%;
-    padding-right: 10%;
-    padding-top: 20pt;
+    height: 100%;
+  }
+
+  .answers-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 100%;
   }
 </style>
