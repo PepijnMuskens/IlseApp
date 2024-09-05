@@ -18,13 +18,44 @@ export default{
       }
       
       },
-      async tempfunction(){
 
+      async Play(){
+        
+        var audio = new Audio('data:audio/mpeg;base64,'+this.round.songs[this.index].fullSongBase64);
+        audio.play();
+        setTimeout(()=> {audio.pause();}, this.currentGuessTime);
+      },
+
+      async MoreTime(){
+        this.attempt++;
+        this.currentGuessTime += this.round.extraTime;
+        console.log(this.currentGuessTime)
+      },
+
+      async Guess(name){
+        if(name == this.round.songs[this.index].name){ //correct guess
+          this.round.score += 1100 - this.attempt * 100;
+        }
+        this.index++
+        if(this.index >= this.round.songs.length){
+          if(this.round.number == 2){
+            this.$router.push({ name: 'StartQuiz'})
+          }
+          const res = await fetch('https://musiq-quiz.onrender.com/roundinfo/'+this.$route.params.id+'/'+ (this.round.number + 1));
+          const data = await res.json();
+          this.round = data;
+          this.index = 0;
+        }
+        this.currentGuessTime = this.roud.guessTime;
+        this.attempt = 1;
       }
     },
     data(){
         return{
           guess: '',
+          index: 0,
+          currentGuessTime: 0,
+          attempt: 1,
           PossibleGuesses:[
             {
               name:'',
@@ -35,21 +66,23 @@ export default{
                 name:'',
                 number: 0,
                 score: 0,
+                guessTime: 2000,
+                extraTime: 2000,
                 songs:[
-                    Object
+                    {
+                      name:'',
+                      fullSongBase64:''
+                    }
                 ]
             }
         }
     },
     async beforeMount(){
-      const requestOptions = {
-          method: 'GET',
-          params: { 'id': this.$route.params.id }
-        }
-      const res = await fetch('https://musiq-quiz.onrender.com/roundinfo',requestOptions)
-      console.log(res)
-        const data = await res.json()
-       
+      const res = await fetch('https://musiq-quiz.onrender.com/roundinfo/'+this.$route.params.id+'/'+ 1)
+      const data = await res.json()
+      this.round = data;
+      console.log(this.round)
+      this.currentGuessTime = this.round.guessTime;
     }
   }
 
@@ -58,9 +91,17 @@ export default{
 <template>
   <main class="main-div">
     <div class="answers-div">
+      <h1>Round {{ this.round.number }}: {{ this.round.name }}</h1>
+      <h1>Score: {{ this.round.score }}</h1>
+      <div style="height: 200pt;">
+        <button @click="Play()">
+          Play
+        </button>
+      </div>
+      <button @click="MoreTime()"> extra time</button>
       <input v-model="this.guess">
         <div v-for="guess in this.PossibleGuesses" :key="guess.name" style="padding-top: 10pt;">
-          <p>{{ guess.name + '\n~\n' + guess.artist}}</p>
+          <button class="btnansw" @click="Guess(guess.name)">{{ guess.name}} <br>~<br> {{guess.artist}} </button>
         </div>
     </div>
     <button class="btn"  @click="getAnswers(this.guess)">Guess</button>
@@ -68,6 +109,11 @@ export default{
 </template>
 
 <style scoped>
+.btnansw{
+    width: 160pt;
+    text-align: center;
+    background-color: rgb(229, 255, 0);
+  }
   .btn{
     width: 200pt;
     height: 80pt;
