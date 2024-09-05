@@ -29,7 +29,6 @@ export default{
       async MoreTime(){
         this.attempt++;
         this.currentGuessTime += this.round.extraTime;
-        console.log(this.currentGuessTime)
       },
 
       async Guess(name){
@@ -37,6 +36,7 @@ export default{
           this.round.score += 1100 - this.attempt * 100;
         }
         this.index++
+
         if(this.index >= this.round.songs.length){
           if(this.round.number == 2){
             this.$router.push({ name: 'StartQuiz'})
@@ -46,8 +46,10 @@ export default{
           this.round = data;
           this.index = 0;
         }
-        this.currentGuessTime = this.roud.guessTime;
+        this.currentGuessTime = this.round.guessTime;
         this.attempt = 1;
+        this.PossibleGuesses =[];
+        this.guess = '';
       }
     },
     data(){
@@ -81,8 +83,8 @@ export default{
       const res = await fetch('https://musiq-quiz.onrender.com/roundinfo/'+this.$route.params.id+'/'+ 1)
       const data = await res.json()
       this.round = data;
-      console.log(this.round)
       this.currentGuessTime = this.round.guessTime;
+      this.PossibleGuesses = [];
     }
   }
 
@@ -98,7 +100,8 @@ export default{
           Play
         </button>
       </div>
-      <button @click="MoreTime()"> extra time</button>
+      <button @click="MoreTime()" v-if="this.attempt <= 5"> extra time</button>
+      <button @click="Guess('')" v-if="this.attempt > 5"> Give Up</button>
       <input v-model="this.guess">
         <div v-for="guess in this.PossibleGuesses" :key="guess.name" style="padding-top: 10pt;">
           <button class="btnansw" @click="Guess(guess.name)">{{ guess.name}} <br>~<br> {{guess.artist}} </button>
