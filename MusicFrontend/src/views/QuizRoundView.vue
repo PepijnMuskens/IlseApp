@@ -100,8 +100,8 @@ export default{
           Play
         </button>
       </div>
-      <button @click="MoreTime()" v-if="this.attempt <= 5"> extra time</button>
-      <button @click="Guess('')" v-if="this.attempt > 5"> Give Up</button>
+      <button @click="MoreTime()" v-if="this.attempt < 5"> extra time</button>
+      <button @click="Guess('')" v-if="this.attempt >= 5"> Give Up</button>
       <input v-model="this.guess">
         <div v-for="guess in this.PossibleGuesses" :key="guess.name" style="padding-top: 10pt;">
           <button class="btnansw" @click="Guess(guess.name)">{{ guess.name}} <br>~<br> {{guess.artist}} </button>
