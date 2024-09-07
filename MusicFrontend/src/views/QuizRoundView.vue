@@ -100,7 +100,7 @@ export default{
           Play
         </button>
       </div>
-      <img style="padding-bottom: 40px;" src="@/assets/barbie-hoofd.png" alt="Barbie Hoofd">
+      <img style="padding-bottom: 40px;" src="../assets/barbie-hoofd.png" alt="Barbie Hoofd">
       <button class="btn-xtra-time" @click="MoreTime()" v-if="this.attempt < 5"> extra time</button>
       <br>
       <button @click="Guess('')" v-if="this.attempt >= 5"> Give Up</button>
