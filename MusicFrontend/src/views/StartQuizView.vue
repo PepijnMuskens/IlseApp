@@ -35,6 +35,7 @@ export default{
     flex-direction: column;
     align-items: center;
     width: 100%;
+    height: 100%;
     padding-left: 10%;
     padding-right: 10%;
     padding-top: 20pt;
