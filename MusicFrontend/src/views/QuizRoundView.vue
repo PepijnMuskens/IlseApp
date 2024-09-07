@@ -95,19 +95,31 @@ export default{
     <div class="answers-div">
       <h1>Round {{ this.round.number }}: {{ this.round.name }}</h1>
       <h1>Score: {{ this.round.score }}</h1>
-      <div style="height: 200pt;">
+      <div style="height: 50pt;">
         <button @click="Play()">
           Play
         </button>
       </div>
-      <button @click="MoreTime()" v-if="this.attempt < 5"> extra time</button>
+      <img style="padding-bottom: 40px;" src="@/assets/barbie-hoofd.png" alt="Barbie Hoofd">
+      <button class="btn-xtra-time" @click="MoreTime()" v-if="this.attempt < 5"> extra time</button>
+      <br>
       <button @click="Guess('')" v-if="this.attempt >= 5"> Give Up</button>
-      <input v-model="this.guess">
-        <div v-for="guess in this.PossibleGuesses" :key="guess.name" style="padding-top: 10pt;">
-          <button class="btnansw" @click="Guess(guess.name)">{{ guess.name}} <br>~<br> {{guess.artist}} </button>
-        </div>
-    </div>
-    <button class="btn"  @click="getAnswers(this.guess)">Guess</button>
+      <div style="display: flex; flex-direction: column;">
+      <!-- Input field en Guess knop naast elkaar -->
+      <div style="display: flex; flex-direction: row;">
+        <input v-model="guess">
+        <button class="btn-guess" @click="getAnswers(guess)">Guess</button>
+      </div>
+
+      <!-- Mogelijke gissingen onder de input field -->
+      <div v-for="guess in PossibleGuesses" :key="guess.name" style="padding-top: 10pt; display: flex; align-items: center; justify-content: center;">
+        <button class="btnansw" @click="Guess(guess.name)">
+          {{ guess.name }} Potential guesses are shown here {{ guess.artist }}
+        </button>
+      </div>
+      </div>
+     </div>
+
   </main>
 </template>
 
@@ -115,13 +127,27 @@ export default{
 .btnansw{
     width: 160pt;
     text-align: center;
-    background-color: rgb(229, 255, 0);
+    background-color: pink;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
   }
   .btn{
-    width: 200pt;
+    width: 50pt;
     height: 80pt;
     text-align: center;
-    background-color: blue;
+    background-color: plum;
+  }
+  .btn-guess{
+    width: 50pt;
+    text-align: center;
+    background-color: plum;
+  }
+  .btn-xtra-time { 
+    text-align: center;
+    background-color: hotpink;
+    height: 30px;
   }
 
   .main-div{
@@ -131,6 +157,7 @@ export default{
     justify-content: space-between;
     width: 100%;
     height: 100%;
+    background-color: palevioletred;
   }
 
   .answers-div{
