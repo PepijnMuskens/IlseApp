@@ -24,6 +24,7 @@ export default{
         var audio = new Audio('data:audio/mpeg;base64,'+this.round.songs[this.index].fullSongBase64);
         audio.play();
         setTimeout(()=> {audio.pause(); audio.currentTime = 0;}, this.currentGuessTime);
+        audio.src='';
       },
 
       async MoreTime(){
