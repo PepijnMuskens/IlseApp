@@ -114,7 +114,7 @@ export default{
       <!-- Mogelijke gissingen onder de input field -->
       <div v-for="guess in PossibleGuesses" :key="guess.name" style="padding-top: 10pt; display: flex; align-items: center; justify-content: center;">
         <button class="btnansw" @click="Guess(guess.name)">
-          {{ guess.name }} Potential guesses are shown here {{ guess.artist }}
+          {{ guess.name }} <br>~<br> {{ guess.artist }}
         </button>
       </div>
       </div>
