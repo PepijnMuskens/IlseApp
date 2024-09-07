@@ -131,7 +131,6 @@ export default{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
   }
   .btn{
     width: 50pt;
